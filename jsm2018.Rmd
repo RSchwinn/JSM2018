@@ -1,0 +1,231 @@
+---
+title: "CFR Miner"
+author: "Richard Schwinn"
+date: "8/1/2018 (updated:  `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+  beamer_presentation: default
+  ioslides_presentation: default
+urlcolor: blue
+linkcolor: blue
+citecolor: blue
+header-includes:
+- \usepackage{kurier}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Disclaimer
+<!-- All views expressed in this presentation are my own and do not reflect the views of any entity with which I have been, am now, or will be affiliated. -->
+The views expressed in this presentation reflect the views of the author alone, and do not necessarily reflect those of the Office of Economic Research, the Office of Advocacy, nor the US Small Business Administration.
+
+---
+## Modifications 
+
+(1) Mention the problem of granularity and the automated aggregator.
+(2) Describe work with the OIRA / regulatory group
+(3) Describe NIST and ITC programs
+(4) Integrate language complexity measures from 
+(5) Frame the conversation in 3 parts: why? what I learned? and demo
+
+Demo
+- Force vector maps and collapsible trees reveal structure and accentuate the interconnections between rules.
+- Summarization algorithms provide succinct k-sentence summaries of any granularity of CFR content ranging from paragraphs to volumes
+- Users can upload, copy & paste, or provide links to their own content, such as business plans or proposed rules, to identify related CFR entries. 
+- Classification and clustering analysis techniques, also known as supervised and unsupervised learning, respectively, identify explicit and implicit CFR features by identifying the latent structure of the corpus. 
+
+
+
+---
+## Mandated by Congress
+
+- to research
+    - the contributions,
+    - status,
+    - and needs of small businesses and
+- to serve as 
+    - an independent voice for small business within the federal government, and 
+    - the watchdog for the Regulatory Flexibility Act (RFA)
+
+
+---
+## What is the Code of Federal Regulations (CFR)?
+
+- The CFR contains the final rules and regulations published in the Federal Register by the executive departments and agencies of the federal government.
+  - e.g. The Federal Aviation Administration (FAA) regulates civil aviation to promote safety.
+  - e.g. The Food and Drug Administration (FAA) is responsible for protecting the public health by ensuring the safety, efficacy, and security of human and veterinary drugs, biological products, and medical devices; and by ensuring the safety of our nation's food supply, cosmetics, and products that emit radiation.
+
+---
+## CFR
+
+- Navigation of the CFR is difficult 
+    - for the general public 
+    - AND FOR AGENCIES.
+- In 1970, the CFR was about 50,000 pages and required a little more than a year to read.
+- Today, it is 180,000+ pages and requires almost 4 years to read.
+
+---
+## CFR
+![](images/CFR_graphic.png)
+
+---
+## Executive Orders & Statutes
+
+1. [Presidential Executive Order on Reducing Regulation and Controlling Regulatory Costs (EO 13771)](https://www.whitehouse.gov/the-press-office/2017/01/30/presidential-executive-order-reducing-regulation-and-controlling) requires that,
+    - "[For] every new regulation issued, at least two prior regulations are to be identified for elimination..."
+
+2. [Section 6 of Executive Order 13563](https://www.accesspro.org/programs/symposium/2012/FOIARegulationsBunk.pdf) requires agencies
+    - conduct periodic, retrospective review and analysis of existing regulations that "may be outmoded, ineffective, insufficient, or excessively burdensome, and to modify, streamline, expand, or repeal them... so as to make the agency’s regulatory program more effective and less burdensome in achieving regulatory objectives."
+
+3. Numerous statutes require agencies to review their rules, such as Title 5, Section 610, which requires:
+    - Agencies review all rules promulgated within the previous 10 years
+
+---
+## CFR Organization (i.e. the real technical challenge)
+Each of the 49 CFR Titles is (pseudo) organized by
+
+- Volume
+    - Subtitle
+        - Chapter
+            - Subchapter           
+                - Part
+                    - Subpart       
+                        - Subject
+                            - Section
+                    
+Although, all levels of nesting are optional.
+
+Actual tree may be organized as
+
+- Title
+    - Part
+        - Section
+
+---
+## Explore and Analyze the CFR with the CFR Miner
+    
+![](images/CFRminer.png)
+
+
+---
+## CFR Miner
+
+- Natural language processing 
+- Dynamic data visualizations
+- Automatic CFR aggregator
+- Accepts uploads and copy and pasted text, such as
+    - small business proposals/plans
+    - proposed regulations
+    - popular media/transcripts
+
+---
+## Text Analysis 
+
+See Olga Scrivner, David Banks, Julia Silge, and Simone Teufel for great introductory material.
+
+Text analysis involves preprocessing, classification, clustering, information extraction, and visualization.
+
+1. After assembling a corpus, the first step to remove stop words (and, the, of) and other words that convey little topic distinctivity (such as *therefore*, *next*, *however*, etc.).
+2. The next step is to stem the vocabulary, i.e. trim them to their roots so that words with the same root are combined (fight, fights, fought).
+3. The third step is to create n-grams, which are sets of words that co-occur improbably
+often, and thus denote a single idea (White House, Supreme Court, etc.).
+
+---
+## Importance
+
+>The purpose of visualization is insight, not pictures. -Ben Schneidermen, 1999
+
+![](images/importance.jpg)
+
+---
+## Importance 
+
+Importance is measured by the $\theta$ or $tf*idf$. Suppose you are interested in CFR entries related to the word *prescription*:
+
+--
+- $tf_{i,j}$ measures the number of times term $i$ appears in document $j$. e.g. $tf_{prescription,4}=10$ means that the word *prescription* appears  in document $4$ on 10 occasions.
+
+--
+- $df_i$ measures the percent of documents within which the word *i* appears across the entire corpus (i.e. all documents) of $N$ documents. e.g. $df_{prescription} = 0.25$ means that the term *prescription* appears in 25% of the documents.
+
+--
+- $idf_i = \frac{1}{df}$ is the inverse document frequency. By inverting the percentage, weight is added to words that appear infrequently. e.g. $df_{i} = 0.25$ means that the $tf$ is weighted by 4.On the other hand, if $df_i = 1$, and the term appears in all documents, the $tf$ is weighted by 1.
+
+--
+- $\theta_{i,j} = \frac{tf_{i,j}}{df_i}$ provides measure of the importance of a word in characterizing a given document within a corpus. e.g. $\theta_{prescription,4} = 40$.
+
+--
+
+Notice that if a word appears in every document, such as *the*, then the $idf$ term does little to increase its relative importance. On the other hand, if the term appears in only a small percent of documents, then it's importance is magnified.
+
+
+---
+## Zipf’s Law
+
+- The i^th^ most frequent term in a given language has frequency proportional to $\frac{1}{i}$:
+- So if the most frequent term *the* occurs 100 times, then the
+second most frequent term *of* should appear 50 times, and *and* 25 times, etc.
+
+- The rule supposedly applies to
+    - Notes in musical performances
+    - Frequency of access to web pages
+    - Income distributions among top earning 3% individuals
+    - Korean family names
+    - Size of earth quakes
+    - Word senses per word
+- While the law doesn't seem to hold very well for many English texts, it works quite well for regulatory texts.
+ 
+
+---
+## Cosine Distance
+![](images/cosine_1.png)
+
+---
+## Cosine Distance
+![](images/cosine_2.png)
+
+
+
+---
+## Demonstrations
+
+- *Sally the Rule Writer* is tasked with reviewing Title 1, Part 457.^[Volume 1, Chapter 4...]  She would like to search for related rules promulgated by other agencies.^[Names borrowed from W. Liberante.]
+- *Ralph the Researcher* is labor economist who would like to search the IRS code for information on the treatment of earnings of workers with and without dependents.
+- *Contessa the Small Business Owner* would like to identify the CFR sections most related to the topics found in her business plan. 
+
+
+
+---
+## Next Steps Short List
+
+- Parallel processing is straight forward and basic tests show that it already promises a 7-fold speed improvement.
+- GPU processing could realistically increase processing speeds 1000-fold+ although it is much more difficult to implement.
+- Topic modelling using LSA/LDA is implemented at the command-line level but I'm still working on making the topic descriptions either graphically or semantically interesting.^[I'd like to generate simple sentences that highlight the highly weighted words.]
+- Sentiment analysis plots are implemented but not obviously useful.
+
+
+---
+## Ideas for the future
+Wendy mentioned a project that actively identifies changes to the CFR over time. Applying recent text summarization algorithms could provide interesting insights into agency activity over time.^[Sumblr: Continuous Summarization of Evolving Tweet Streams]
+
+![Text Summarization](images/Sumblr.png)
+
+---
+## Thank you!^[Ask about DocketWrench]
+
+
+---
+## Demo
+
+-
+
+- Summarization
+[https://www.positive.news](https://www.positive.news)
