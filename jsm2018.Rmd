@@ -1,5 +1,6 @@
 ---
 title: "CFR Miner"
+subtitle: ""
 author: "Richard Schwinn"
 date: "8/1/2018 (updated:  `r Sys.Date()`)"
 output:
@@ -7,17 +8,17 @@ output:
     lib_dir: libs
     nature:
       highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
-  beamer_presentation: default
+    highlightLines: true
+    countIncrementalSlides: false
+  beamer_presentation:
   ioslides_presentation: default
 urlcolor: blue
 linkcolor: blue
 citecolor: blue
 header-includes:
-- \usepackage{kurier}
+  - \usepackage{kurier}
 ---
-
+  
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
@@ -27,26 +28,11 @@ knitr::opts_chunk$set(echo = FALSE)
 <!-- All views expressed in this presentation are my own and do not reflect the views of any entity with which I have been, am now, or will be affiliated. -->
 The views expressed in this presentation reflect the views of the author alone, and do not necessarily reflect those of the Office of Economic Research, the Office of Advocacy, nor the US Small Business Administration.
 
----
-## Modifications 
-
-(1) Mention the problem of granularity and the automated aggregator.
-(2) Describe work with the OIRA / regulatory group
-(3) Describe NIST and ITC programs
-(4) Integrate language complexity measures from 
-(5) Frame the conversation in 3 parts: why? what I learned? and demo
-
-Demo
-- Force vector maps and collapsible trees reveal structure and accentuate the interconnections between rules.
-- Summarization algorithms provide succinct k-sentence summaries of any granularity of CFR content ranging from paragraphs to volumes
-- Users can upload, copy & paste, or provide links to their own content, such as business plans or proposed rules, to identify related CFR entries. 
-- Classification and clustering analysis techniques, also known as supervised and unsupervised learning, respectively, identify explicit and implicit CFR features by identifying the latent structure of the corpus. 
-
-
+- This presentation was created for use with the *xaringan* package. Certain aspects are not capatible with the *pdf* format.
 
 ---
-## Mandated by Congress
-
+## We are Mandated by Congress
+  
 - to research
     - the contributions,
     - status,
@@ -58,10 +44,10 @@ Demo
 
 ---
 ## What is the Code of Federal Regulations (CFR)?
-
+  
 - The CFR contains the final rules and regulations published in the Federal Register by the executive departments and agencies of the federal government.
-  - e.g. The Federal Aviation Administration (FAA) regulates civil aviation to promote safety.
-  - e.g. The Food and Drug Administration (FAA) is responsible for protecting the public health by ensuring the safety, efficacy, and security of human and veterinary drugs, biological products, and medical devices; and by ensuring the safety of our nation's food supply, cosmetics, and products that emit radiation.
+    - e.g. The Federal Aviation Administration (FAA) regulates civil aviation to promote safety.
+    - e.g. The Food and Drug Administration (FAA) is responsible for protecting the public health by ensuring the safety, efficacy, and security of human and veterinary drugs, biological products, and medical devices; and by ensuring the safety of our nation's food supply, cosmetics, and products that emit radiation.
 
 ---
 ## CFR
@@ -69,15 +55,17 @@ Demo
 - Navigation of the CFR is difficult 
     - for the general public 
     - AND FOR AGENCIES.
+
 - In 1970, the CFR was about 50,000 pages and required a little more than a year to read.
 - Today, it is 180,000+ pages and requires almost 4 years to read.
 
 ---
+
 ## CFR
 ![](images/CFR_graphic.png)
 
 ---
-## Executive Orders & Statutes
+## Executive Orders & Statutes Requiring Review
 
 1. [Presidential Executive Order on Reducing Regulation and Controlling Regulatory Costs (EO 13771)](https://www.whitehouse.gov/the-press-office/2017/01/30/presidential-executive-order-reducing-regulation-and-controlling) requires that,
     - "[For] every new regulation issued, at least two prior regulations are to be identified for elimination..."
@@ -95,41 +83,53 @@ Each of the 49 CFR Titles is (pseudo) organized by
 - Volume
     - Subtitle
         - Chapter
-            - Subchapter           
+            - Subchapter
                 - Part
-                    - Subpart       
+                    - Subpart
                         - Subject
                             - Section
-                    
-Although, all levels of nesting are optional.
 
-Actual tree may be organized as
+<!-- - Volume -->
+<!--     - Subtitle -->
+<!--         - Chapter -->
+<!-- - Subchapter -->
+<!--     - Part -->
+<!--         - Subchapter -->
+<!-- - Part -->
+<!--     - Subpart -->
+<!--         - Subject -->
+<!-- - Section -->
+
+
+Although, all levels of nesting are optional. Actual tree may be organized as
 
 - Title
     - Part
         - Section
 
 ---
-## Explore and Analyze the CFR with the CFR Miner
-    
-![](images/CFRminer.png)
+## How to Explore and Analyze the CFR?
 
-
----
-## CFR Miner
+Use
 
 - Natural language processing 
-- Dynamic data visualizations
-- Automatic CFR aggregator
-- Accepts uploads and copy and pasted text, such as
+- Dynamic visualizations
+- Auto-CFR aggregator
+- Integrate uploads and copy and pasted text, such as
     - small business proposals/plans
     - proposed regulations
     - popular media/transcripts
 
 ---
-## Text Analysis 
+## The CFR Miner
+[Link to CFR Miner](http://rsdev.shinyapps.io/cfrminer)    
+>The purpose of visualization is insight, not pictures. -Ben Schneidermen, 1999
 
-See Olga Scrivner, David Banks, Julia Silge, and Simone Teufel for great introductory material.
+![](images/CFRminer.png)
+
+
+---
+## Before We Get Started: A Primer on Text Analysis Visualizations
 
 Text analysis involves preprocessing, classification, clustering, information extraction, and visualization.
 
@@ -138,16 +138,22 @@ Text analysis involves preprocessing, classification, clustering, information ex
 3. The third step is to create n-grams, which are sets of words that co-occur improbably
 often, and thus denote a single idea (White House, Supreme Court, etc.).
 
+*See Olga Scrivner, David Banks, Julia Silge, and Simone Teufel for great introductory material.
+
+
 ---
-## Importance
+## Why We Need Visualizations *i.e. The problem with summary statistics*
 
->The purpose of visualization is insight, not pictures. -Ben Schneidermen, 1999
+![](images/aq1.png)
 
-![](images/importance.jpg)
+---
+## Why We Need Visualizations
+
+![](images/aq2.png)
+
 
 ---
 ## Importance 
-
 Importance is measured by the $\theta$ or $tf*idf$. Suppose you are interested in CFR entries related to the word *prescription*:
 
 --
@@ -161,19 +167,19 @@ Importance is measured by the $\theta$ or $tf*idf$. Suppose you are interested i
 
 --
 - $\theta_{i,j} = \frac{tf_{i,j}}{df_i}$ provides measure of the importance of a word in characterizing a given document within a corpus. e.g. $\theta_{prescription,4} = 40$.
-
 --
+
 
 Notice that if a word appears in every document, such as *the*, then the $idf$ term does little to increase its relative importance. On the other hand, if the term appears in only a small percent of documents, then it's importance is magnified.
 
 
 ---
 ## Zipf’s Law
-
-- The i^th^ most frequent term in a given language has frequency proportional to $\frac{1}{i}$:
-- So if the most frequent term *the* occurs 100 times, then the
-second most frequent term *of* should appear 50 times, and *and* 25 times, etc.
-
+  
+- Zipf’s Law says that the i^th^ most frequent term in a given language, or set, has a frequency proportional to $\frac{1}{i}$.
+--
+- If the most frequent term *the* occurs 100 times, then the second most frequent term *of* should appear 50 times, and, the third most frequent, *and*, should appear 25 times, etc.
+--
 - The rule supposedly applies to
     - Notes in musical performances
     - Frequency of access to web pages
@@ -181,8 +187,9 @@ second most frequent term *of* should appear 50 times, and *and* 25 times, etc.
     - Korean family names
     - Size of earth quakes
     - Word senses per word
+--
 - While the law doesn't seem to hold very well for many English texts, it works quite well for regulatory texts.
- 
+
 
 ---
 ## Cosine Distance
@@ -192,40 +199,39 @@ second most frequent term *of* should appear 50 times, and *and* 25 times, etc.
 ## Cosine Distance
 ![](images/cosine_2.png)
 
+---    
+## Demo
 
-
----
-## Demonstrations
-
-- *Sally the Rule Writer* is tasked with reviewing Title 1, Part 457.^[Volume 1, Chapter 4...]  She would like to search for related rules promulgated by other agencies.^[Names borrowed from W. Liberante.]
-- *Ralph the Researcher* is labor economist who would like to search the IRS code for information on the treatment of earnings of workers with and without dependents.
-- *Contessa the Small Business Owner* would like to identify the CFR sections most related to the topics found in her business plan. 
-
-
+[Link to CFR Miner](http://rsdev.shinyapps.io/cfrminer)    
 
 ---
-## Next Steps Short List
-
-- Parallel processing is straight forward and basic tests show that it already promises a 7-fold speed improvement.
-- GPU processing could realistically increase processing speeds 1000-fold+ although it is much more difficult to implement.
-- Topic modelling using LSA/LDA is implemented at the command-line level but I'm still working on making the topic descriptions either graphically or semantically interesting.^[I'd like to generate simple sentences that highlight the highly weighted words.]
-- Sentiment analysis plots are implemented but not obviously useful.
-
+## Demo
+1. Explore 
+    - Force vector maps and collapsible trees reveal structure and accentuate the interconnections between rules
+2. Preperation
+    - Solving the problem of granularity with automated aggregator
+3. Analysis
+    - Summarization algorithms provide succinct k-sentence summaries of any granularity of CFR content ranging from paragraphs to volumes [https://www.positive.news](https://www.positive.news)
+    - Users can upload, copy & paste, or provide links to their own content, such as business plans or proposed rules, to identify related CFR entries
+4. Related Work 
+    - Collaboration with the OIRA / NIST on IBRs
+    - Collaboration with NIST and ITC programs on TBTs
 
 ---
-## Ideas for the future
-Wendy mentioned a project that actively identifies changes to the CFR over time. Applying recent text summarization algorithms could provide interesting insights into agency activity over time.^[Sumblr: Continuous Summarization of Evolving Tweet Streams]
+## Next Projects: Text Summarization of the FR Stream
+Sumblr: Continuous Summarization of Evolving Tweet Streams
 
 ![Text Summarization](images/Sumblr.png)
 
 ---
-## Thank you!^[Ask about DocketWrench]
+## Other Updates
 
+- Parallel processing is straight forward and basic tests show that it already promises a 7-fold speed improvement.
+- GPU processing could realistically increase processing speeds 1000-fold+ although it is much more difficult to implement.
 
 ---
-## Demo
+## Demo Style 2
 
--
-
-- Summarization
-[https://www.positive.news](https://www.positive.news)
+- *Sally the Rule Writer* is tasked with reviewing Title 1, Part 457.^[Volume 1, Chapter 4...]  She would like to search for related rules promulgated by other agencies.^[Names borrowed from W. Liberante.]
+- *Ralph the Researcher* is labor economist who would like to search the IRS code for information on the treatment of earnings of workers with and without dependents.
+- *Contessa the Small Business Owner* would like to identify the CFR sections most related to the topics found in her business plan. 
